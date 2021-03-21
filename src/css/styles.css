@@ -1,3 +1,8 @@
 body {
     background-color: lightcoral;
 }
+
+img {
+    width: 300px;
+    height: auto;
+}
