@@ -5,22 +5,25 @@ import './css/styles.css';
 
 $('#submit').click(function() {
 
-  let request = new XMLHttpRequest();
-  const url = `https://api.nasa.gov/planetary/apod?api_key=${process.env.API_KEY}`;
+  let promise = new Promise(function(resolve, reject) {
 
-  console.log(url);
+    let request = new XMLHttpRequest();
+    const url = `https://api.nasa.gov/planetary/apod?api_key=${process.env.API_KEY}`;
 
-  request.onreadystatechange = function() {
-    if (this.readyState === 4 && this.status === 200) {
-      const response = JSON.parse(this.responseText);
-      getElements(response);
-    }
-  };
+    request.onload = function() {
+        if (this.status === 200) {
+        resolve(request.response);
+        } else {
+        reject(request.response);
+        }
+    };
 
-  request.open("GET", url, true);
-  request.send();
+    request.open("GET", url, true);
+    request.send();
+        });
 
-  function getElements(response) {
-    $('.show').append(`<img src="${response.hdurl}">`);
-  }
+    promise.then(function(response) {
+      const body = JSON.parse(response);
+      $('.show').append(`<img src="${body.hdurl}">`);
+    });
 });
