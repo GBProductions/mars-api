@@ -25,5 +25,9 @@ $('#submit').click(function() {
     promise.then(function(response) {
       const body = JSON.parse(response);
       $('.show').append(`<img src="${body.hdurl}">`);
+      $('.showErrors').text("");
+    }, function(error) {
+        $('.showErrors').text(`There was an error processing your request: ${error}`);
+        $('.show').text("");
     });
 });
